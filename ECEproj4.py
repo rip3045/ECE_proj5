@@ -32,7 +32,12 @@ def noise_sam(mean, std):
 def deg2rad(deg):
     return deg*np.pi/180;
 
-
+# normalize your radians
+def normalize_radians(x):
+    x = x % (2 * np.pi)
+    if x > np.pi:
+        x -= 2 * np.pi
+    return x
 # In[4]:
 
 
@@ -82,17 +87,17 @@ while i<len(Wptz)-1:
     param = dubins.calcDubinsPath(Wptz[i], Wptz[i+1], 5)
     path = dubins.dubins_traj(param,10000)
     # Plot the results
-    plt.plot(Wptz[i].x,Wptz[i].y,'kx')
-    plt.plot(Wptz[i+1].x,Wptz[i+1].y,'kx')
-    plt.plot(path[:,0],path[:,1],'b-')
+    # pltplot(Wptz[i].x,Wptz[i].y,'kx')
+    # pltplot(Wptz[i+1].x,Wptz[i+1].y,'kx')
+    # pltplot(path[:,0],path[:,1],'b-')
     i+=1
 #print(path)
-plt.grid(True)
-plt.axis("equal")
-plt.title('Dubin\'s Curves Trajectory Generation')
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.show()
+# pltgrid(True)
+# pltaxis("equal")
+# plttitle('Dubin\'s Curves Trajectory Generation')
+# pltxlabel('X')
+# pltylabel('Y')
+# pltshow()
 
 
 # In[8]:
@@ -116,7 +121,7 @@ vel_path = np.zeros((10000-1,3))
 for i in range(0,path.shape[0]-1):
     vel_path[i,:] = path[i+1,:]-path[i,:]
     
-plt.plot(vel_path[:,0], vel_path[:,1])
+# pltplot(vel_path[:,0], vel_path[:,1])
 
 #corrupt the vel_path variable
 for i in range(0, vel_path.shape[0]):
@@ -125,13 +130,13 @@ for i in range(0, vel_path.shape[0]):
         vel_path[i,1] = vel_path[i,1]+noise*np.cos(vel_path[i,2])
         vel_path[i,2] = vel_path[i,2]+noise_sam(0, 0.002)
     
-#plt.scatter(vel_path[:,0], vel_path[:,1])
+## pltscatter(vel_path[:,0], vel_path[:,1])
 
 
 # In[11]:
 
 
-plt.scatter(vel_path[:,0], vel_path[:,1])
+# pltscatter(vel_path[:,0], vel_path[:,1])
 
 
 # In[12]:
@@ -148,18 +153,18 @@ noise_path_intg = np.zeros((200,3))
 for i in range(0,200):
     noise_path_intg[i,:] = noise_path[50*i,:]
 
-plt.figure(figsize=(14,14))    
-plt.plot(Wptz[0].x,Wptz[0].y,'kx')
-plt.plot(Wptz[1].x,Wptz[1].y,'kx')
-plt.plot(path[:,0],path[:,1],'b-')    
-plt.scatter(noise_path_intg[:,0], noise_path_intg[:,1], color='g')
-plt.grid(True)
-plt.axis("equal")
-plt.title('Dubin\'s Curves With noisy path integral')
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.legend(['waypoint1', 'waypoint2','true path', 'estimated path'])
-plt.show()
+# pltfigure(figsize=(14,14))    
+# pltplot(Wptz[0].x,Wptz[0].y,'kx')
+# pltplot(Wptz[1].x,Wptz[1].y,'kx')
+# pltplot(path[:,0],path[:,1],'b-')    
+# pltscatter(noise_path_intg[:,0], noise_path_intg[:,1], color='g')
+# pltgrid(True)
+# pltaxis("equal")
+# plttitle('Dubin\'s Curves With noisy path integral')
+# pltxlabel('X')
+# pltylabel('Y')
+# pltlegend(['waypoint1', 'waypoint2','true path', 'estimated path'])
+# pltshow()
 
 
 # In[13]:
@@ -185,30 +190,30 @@ for i in range(0,radar_bearing1.shape[0]):
     noisy_radar_bearing1[i,0] = radar_bearing1[i,0]+noise_sam(0,deg2rad(3))
     noisy_radar_bearing1[i,1] = radar_bearing1[i,1]+noise_sam(0,deg2rad(3))
     noisy_radar_bearing1[i,2] = radar_bearing1[i,2]+noise_sam(0,deg2rad(np.sqrt(5)))
-plt.figure(figsize=(14,14))   
-plt.plot(radar_bearing1[:,0],'b-')
-#plt.plot(radar_bearing1[:,1],radar_bearing1[:,2],'g-')
-plt.scatter(x=np.arange(radar_bearing1.shape[0]),y=noisy_radar_bearing1[:,0])
-plt.grid(True)
-plt.title('Bearing angle from radar 1')
-plt.xlabel('Sample')
-plt.ylabel('Bearing Angle')
-plt.legend(['true trajectory', 'noised sampling'])
-plt.show()
+# pltfigure(figsize=(14,14))   
+# pltplot(radar_bearing1[:,0],'b-')
+## pltplot(radar_bearing1[:,1],radar_bearing1[:,2],'g-')
+# pltscatter(x=np.arange(radar_bearing1.shape[0]),y=noisy_radar_bearing1[:,0])
+# pltgrid(True)
+# plttitle('Bearing angle from radar 1')
+# pltxlabel('Sample')
+# pltylabel('Bearing Angle')
+# pltlegend(['true trajectory', 'noised sampling'])
+# pltshow()
 
 
 # In[14]:
 
-plt.figure(figsize=(14,14)) 
-plt.plot(radar_bearing1[:,1],'b-')
-#plt.plot(radar_bearing1[:,1],radar_bearing1[:,2],'g-')
-plt.scatter(x=np.arange(radar_bearing1.shape[0]),y=noisy_radar_bearing1[:,1])
-plt.grid(True)
-plt.title('Bearing angle from radar 2')
-plt.xlabel('Sample')
-plt.ylabel('Bearing Angle')
-plt.legend(['true trajectory', 'noised sampling'])
-plt.show()
+# pltfigure(figsize=(14,14)) 
+# pltplot(radar_bearing1[:,1],'b-')
+## pltplot(radar_bearing1[:,1],radar_bearing1[:,2],'g-')
+# pltscatter(x=np.arange(radar_bearing1.shape[0]),y=noisy_radar_bearing1[:,1])
+# pltgrid(True)
+# plttitle('Bearing angle from radar 2')
+# pltxlabel('Sample')
+# pltylabel('Bearing Angle')
+# pltlegend(['true trajectory', 'noised sampling'])
+# pltshow()
 
 
 # In[15]:
@@ -256,15 +261,15 @@ for i in range(0,200):
     noised_path_sam1[i,:] = noised_path1[50*i,:]    
     
 #noised_path1 = clear_outliers(noised_path1)
-plt.figure(figsize=(14,14)) 
-plt.plot(path[:,0],path[:,1],'b-') 
-plt.scatter(noised_path_sam1[:,0],noised_path_sam1[:,1],color='g')
-plt.grid(True)
-plt.axis("equal")
-plt.title('Dubin\'s Curves with noisy radar measurements from set 1')
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.show()
+# pltfigure(figsize=(14,14)) 
+# pltplot(path[:,0],path[:,1],'b-') 
+# pltscatter(noised_path_sam1[:,0],noised_path_sam1[:,1],color='g')
+# pltgrid(True)
+# pltaxis("equal")
+# plttitle('Dubin\'s Curves with noisy radar measurements from set 1')
+# pltxlabel('X')
+# pltylabel('Y')
+# pltshow()
 
 
 # In[18]:
@@ -290,30 +295,30 @@ for i in range(0,radar_bearing1.shape[0]):
     noisy_radar_bearing2[i,0] = radar_bearing2[i,0]+noise_sam(0,deg2rad(3))
     noisy_radar_bearing2[i,1] = radar_bearing2[i,1]+noise_sam(0,deg2rad(3))
     noisy_radar_bearing2[i,2] = radar_bearing2[i,2]+noise_sam(0,deg2rad(np.sqrt(5)))
-plt.figure(figsize=(14,14))    
-plt.plot(radar_bearing2[:,0],'b-')
-#plt.plot(radar_bearing1[:,1],radar_bearing1[:,2],'g-')
-plt.scatter(x=np.arange(radar_bearing2.shape[0]),y=noisy_radar_bearing2[:,0])
-plt.grid(True)
-plt.title('Bearing angle from radar 1')
-plt.xlabel('Sample')
-plt.ylabel('Bearing Angle')
-plt.legend(['true trajectory', 'noised sampling'])
-plt.show()
+# pltfigure(figsize=(14,14))    
+# pltplot(radar_bearing2[:,0],'b-')
+## pltplot(radar_bearing1[:,1],radar_bearing1[:,2],'g-')
+# pltscatter(x=np.arange(radar_bearing2.shape[0]),y=noisy_radar_bearing2[:,0])
+# pltgrid(True)
+# plttitle('Bearing angle from radar 1')
+# pltxlabel('Sample')
+# pltylabel('Bearing Angle')
+# pltlegend(['true trajectory', 'noised sampling'])
+# pltshow()
 
 
 # In[19]:
 
-plt.figure(figsize=(14,14)) 
-plt.plot(radar_bearing2[:,1],'b-')
-#plt.plot(radar_bearing2[:,1],radar_bearing2[:,2],'g-')
-plt.scatter(x=np.arange(radar_bearing2.shape[0]),y=noisy_radar_bearing2[:,1])
-plt.grid(True)
-plt.title('Bearing angle from radar 2')
-plt.xlabel('Sample')
-plt.ylabel('Bearing Angle')
-plt.legend(['true trajectory', 'noised sampling'])
-plt.show()
+# pltfigure(figsize=(14,14)) 
+# pltplot(radar_bearing2[:,1],'b-')
+## pltplot(radar_bearing2[:,1],radar_bearing2[:,2],'g-')
+# pltscatter(x=np.arange(radar_bearing2.shape[0]),y=noisy_radar_bearing2[:,1])
+# pltgrid(True)
+# plttitle('Bearing angle from radar 2')
+# pltxlabel('Sample')
+# pltylabel('Bearing Angle')
+# pltlegend(['true trajectory', 'noised sampling'])
+# pltshow()
 
 
 # In[22]:
@@ -330,16 +335,16 @@ for i in range(0, noised_path2.shape[0]):
 noised_path_sam2 = np.zeros(noise_path_intg.shape)
 for i in range(0,200):
     noised_path_sam2[i,:] = noised_path2[50*i,:]    
-plt.figure(figsize=(14,14))    
+# pltfigure(figsize=(14,14))    
 #noised_path1 = clear_outliers(noised_path1)    
-plt.plot(path[:,0],path[:,1],'b-') 
-plt.scatter(noised_path_sam2[:,0],noised_path_sam2[:,1],color='g')
-plt.grid(True)
-plt.axis("equal")
-plt.title('Dubin\'s Curves with noisy radar measurements from set 2')
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.show()
+# pltplot(path[:,0],path[:,1],'b-') 
+# pltscatter(noised_path_sam2[:,0],noised_path_sam2[:,1],color='g')
+# pltgrid(True)
+# pltaxis("equal")
+# plttitle('Dubin\'s Curves with noisy radar measurements from set 2')
+# pltxlabel('X')
+# pltylabel('Y')
+# pltshow()
 
 
 # In[ ]:
